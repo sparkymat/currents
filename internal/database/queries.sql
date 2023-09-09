@@ -1,3 +1,9 @@
+-- name: FetchMediaItemForUser :one
+SELECT * FROM media_items
+  WHERE id = @media_item_id::uuid
+    AND user_id = @user_id::uuid
+  LIMIT 1;
+
 -- name: MarkVideoMediaItemAsProcessed :exec
 UPDATE media_items
   SET state = 'processed', video_file_path = @video_file_path::text, thumbnail_file_path = @thumbnail_file_path::text, subtitle_file_paths = @subtitle_file_paths::text[], transcript = @transcript::text, title = @title::text, metadata = @metadata::jsonb

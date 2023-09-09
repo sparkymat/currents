@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/sparkymat/currents/internal/dbx"
 	"github.com/google/uuid"
+	"github.com/sparkymat/currents/internal/dbx"
 )
 
 type MediaService interface {
@@ -23,4 +23,9 @@ type MediaService interface {
 		pageSize int32,
 		pageNumber int32,
 	) ([]dbx.MediaItem, int64, error)
+	FetchMediaItem(
+		ctx context.Context,
+		userID uuid.UUID,
+		mediaItemID uuid.UUID,
+	) (dbx.MediaItem, error)
 }

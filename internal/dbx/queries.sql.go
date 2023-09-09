@@ -230,6 +230,41 @@ func (q *Queries) FetchMediaItem(ctx context.Context, mediaItemID uuid.UUID) (Me
 	return i, err
 }
 
+const fetchMediaItemForUser = `-- name: FetchMediaItemForUser :one
+SELECT id, user_id, title, url, item_type, published_at, created_at, updated_at, state, video_file_path, thumbnail_file_path, subtitle_file_paths, transcript, metadata FROM media_items
+  WHERE id = $1::uuid
+    AND user_id = $2::uuid
+  LIMIT 1
+`
+
+type FetchMediaItemForUserParams struct {
+
+	MediaItemID uuid.UUID
+	UserID      uuid.UUID
+}
+
+func (q *Queries) FetchMediaItemForUser(ctx context.Context, arg FetchMediaItemForUserParams) (MediaItem, error) {
+	row := q.db.QueryRow(ctx, fetchMediaItemForUser, arg.MediaItemID, arg.UserID)
+	var i MediaItem
+	err := row.Scan(
+		&i.ID,
+		&i.UserID,
+		&i.Title,
+		&i.Url,
+		&i.ItemType,
+		&i.PublishedAt,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.State,
+		&i.VideoFilePath,
+		&i.ThumbnailFilePath,
+		&i.SubtitleFilePaths,
+		&i.Transcript,
+		&i.Metadata,
+	)
+	return i, err
+}
+
 const fetchMediaItemTopicsForMediaItems = `-- name: FetchMediaItemTopicsForMediaItems :many
 SELECT mit.id, mit.media_item_id, mit.topic_id, mit.confirmed_at, mit.created_at, mit.updated_at
   FROM media_item_topics mit
@@ -454,6 +489,7 @@ SELECT id, user_id, name, description, created_at, updated_at
   FROM topics
   WHERE user_id = $1::uuid
     AND name ILIKE '%' || $2::text || '%'
+    AND state = 'processed'
   ORDER BY name ASC
   LIMIT $4::int
   OFFSET $3::int

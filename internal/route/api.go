@@ -1,11 +1,11 @@
 package route
 
 import (
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/sparkymat/currents/internal"
 	"github.com/sparkymat/currents/internal/auth"
 	"github.com/sparkymat/currents/internal/handler/api"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 )
 
 func registerAPIRoutes(app *echo.Group, cfg ConfigService, s internal.Services) {
@@ -23,4 +23,5 @@ func registerAPIRoutes(app *echo.Group, cfg ConfigService, s internal.Services) 
 
 	apiGroup.POST("/media_items", api.MediaItemsCreate(cfg, s))
 	apiGroup.GET("/media_items", api.MediaItemsSearch(cfg, s))
+	apiGroup.GET("/media_items/:id", api.MediaItemsShow(cfg, s))
 }

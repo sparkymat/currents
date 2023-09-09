@@ -5,6 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/lo"
+	"github.com/sparkymat/currents/internal/dbtypes"
 	"github.com/sparkymat/currents/internal/dbx"
 )
 
@@ -18,6 +19,27 @@ type MediaItem struct {
 	VideoURL     *string  `json:"video_url"`
 	ThumbnailURL *string  `json:"thumbnail_url"`
 	SubtitleURLs []string `json:"subtitle_urls"`
+}
+
+type DetailedMediaItem struct {
+	MediaItem
+	Transcript *string      `json:"transcript"`
+	Metadata   dbtypes.JSON `json:"metadata"`
+}
+
+func DetailedMediaItemFromModel(m dbx.MediaItem) DetailedMediaItem {
+	item := MediaItemFromModel(m)
+
+	detailedItem := DetailedMediaItem{
+		MediaItem: item,
+		Metadata:  m.Metadata,
+	}
+
+	if m.Transcript.Valid {
+		detailedItem.Transcript = &m.Transcript.String
+	}
+
+	return detailedItem
 }
 
 func MediaItemFromModel(m dbx.MediaItem) MediaItem {

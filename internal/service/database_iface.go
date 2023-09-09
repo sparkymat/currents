@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 
-	"github.com/sparkymat/currents/internal/dbx"
 	"github.com/google/uuid"
+	"github.com/sparkymat/currents/internal/dbx"
 )
 
 type DatabaseProvider interface {
@@ -17,6 +17,7 @@ type DatabaseProvider interface {
 	CreateUser(ctx context.Context, arg dbx.CreateUserParams) (dbx.User, error)
 	DeleteMediaItem(ctx context.Context, arg dbx.DeleteMediaItemParams) error
 	FetchMediaItem(ctx context.Context, mediaItemID uuid.UUID) (dbx.MediaItem, error)
+	FetchMediaItemForUser(ctx context.Context, arg dbx.FetchMediaItemForUserParams) (dbx.MediaItem, error)
 	FetchMediaItemTopicsForMediaItems(ctx context.Context, arg dbx.FetchMediaItemTopicsForMediaItemsParams) ([]dbx.MediaItemTopic, error)
 	FetchMediaItemsByID(ctx context.Context, arg dbx.FetchMediaItemsByIDParams) ([]dbx.MediaItem, error)
 	FetchUserByUsername(ctx context.Context, username string) (dbx.User, error)
