@@ -34,7 +34,7 @@ const initialState: State = {
 };
 
 const slice = createSlice({
-  name: 'app',
+  name: 'mediaItems',
   initialState,
   reducers: {
     updateQuery: (state, action: PayloadAction<string>) => {

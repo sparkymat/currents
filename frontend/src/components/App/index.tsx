@@ -18,6 +18,7 @@ import { IconBrightness, IconSettings } from '@tabler/icons-react';
 import { AppDispatch } from '../../store';
 import { updatePath } from '../../features/App/slice';
 import MediaItems from '../MediaItems';
+import MediaItemDetails from '../MediaItemDetails';
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -94,6 +95,7 @@ const App = () => {
       >
         <Routes>
           <Route index element={<MediaItems />} />
+          <Route path="/item/:id" element={<MediaItemDetails />} />
         </Routes>
       </AppShell>
     </div>

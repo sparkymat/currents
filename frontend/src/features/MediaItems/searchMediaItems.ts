@@ -15,7 +15,7 @@ export interface SearchMediaItemsResponse {
   total_count: number;
 }
 
-const fetchAlbums = createAsyncThunk<
+const searchMediaItems = createAsyncThunk<
   SearchMediaItemsResponse,
   SearchMediaItemsRequest
 >(
@@ -31,4 +31,4 @@ const fetchAlbums = createAsyncThunk<
   },
 );
 
-export default fetchAlbums;
+export default searchMediaItems;

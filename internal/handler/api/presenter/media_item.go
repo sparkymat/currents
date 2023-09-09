@@ -2,12 +2,25 @@ package presenter
 
 import (
 	"fmt"
+	"strings"
 
+	"github.com/asticode/go-astisub"
 	"github.com/google/uuid"
 	"github.com/samber/lo"
 	"github.com/sparkymat/currents/internal/dbtypes"
 	"github.com/sparkymat/currents/internal/dbx"
 )
+
+type SubtitleEntry struct {
+	StartMS int64          `json:"start_ms"`
+	EndMS   int64          `json:"end_ms"`
+	Lines   []SubtitleLine `json:"lines"`
+}
+
+type SubtitleLine struct {
+	Speaker string   `json:"speaker"`
+	Lines   []string `json:"lines"`
+}
 
 type MediaItem struct {
 	ID           string   `json:"id"`
@@ -23,8 +36,8 @@ type MediaItem struct {
 
 type DetailedMediaItem struct {
 	MediaItem
-	Transcript *string      `json:"transcript"`
-	Metadata   dbtypes.JSON `json:"metadata"`
+	Transcript []SubtitleEntry `json:"transcript"`
+	Metadata   dbtypes.JSON    `json:"metadata"`
 }
 
 func DetailedMediaItemFromModel(m dbx.MediaItem) DetailedMediaItem {
@@ -36,7 +49,24 @@ func DetailedMediaItemFromModel(m dbx.MediaItem) DetailedMediaItem {
 	}
 
 	if m.Transcript.Valid {
-		detailedItem.Transcript = &m.Transcript.String
+		parsedSubtitles, err := astisub.ReadFromWebVTT(strings.NewReader(m.Transcript.String))
+		if err == nil {
+			for _, subtitle := range parsedSubtitles.Items {
+				transcriptItem := SubtitleEntry{
+					StartMS: subtitle.StartAt.Milliseconds(),
+					EndMS:   subtitle.EndAt.Milliseconds(),
+				}
+
+				for _, line := range subtitle.Lines {
+					transcriptItem.Lines = append(transcriptItem.Lines, SubtitleLine{
+						Speaker: line.VoiceName,
+						Lines:   lo.Map(line.Items, func(i astisub.LineItem, _ int) string { return i.Text }),
+					})
+				}
+
+				detailedItem.Transcript = append(detailedItem.Transcript, transcriptItem)
+			}
+		}
 	}
 
 	return detailedItem

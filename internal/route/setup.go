@@ -2,13 +2,14 @@ package route
 
 import (
 	"net/http"
+	"path"
 
-	"github.com/sparkymat/currents/internal"
 	"github.com/go-playground/validator/v10"
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/sparkymat/currents/internal"
 )
 
 type CustomValidator struct {
@@ -37,6 +38,7 @@ func Setup(e *echo.Echo, cfg ConfigService, s internal.Services) {
 	app.Static("/css", "public/css")
 	app.Static("/images", "public/images")
 	app.Static("/fonts", "public/fonts")
+	app.Static("v", path.Join(cfg.StorageFolder(), "v"))
 
 	app.Use(session.Middleware(sessions.NewCookieStore([]byte(cfg.SessionSecret()))))
 

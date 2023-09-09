@@ -9,7 +9,7 @@ interface CreateMediaItemRequest {
 }
 
 const createMediaItem = createAsyncThunk<MediaItem, CreateMediaItemRequest>(
-  'videosYTSearch/createVideo',
+  'mediaItems/createMediaItem',
   async (request: CreateMediaItemRequest, thunkAPI) => {
     const csrf = (document.querySelector('meta[name="csrf-token"]') as any)
       .content;
