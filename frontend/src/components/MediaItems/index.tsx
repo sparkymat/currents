@@ -13,6 +13,7 @@ import {
   Group,
   Space,
   Button,
+  Text,
 } from '@mantine/core';
 import React, { ChangeEvent, useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -159,17 +160,20 @@ const MediaItems = () => {
           filterLocation={newFilterURL}
           onNewClicked={createModalOpened}
         />
-        <Flex wrap="wrap">
+        <Flex direction="column">
           {items.map(v => (
-            <Anchor
-              color={colorScheme === 'dark' ? 'white' : 'dark'}
-              underline={false}
-              href={`/#/item/${v.id}`}
-            >
-              <Title order={6} weight={300}>
-                {v.url}
-              </Title>
-            </Anchor>
+            <Flex my="xs" direction="column">
+              <Anchor
+                color={colorScheme === 'dark' ? 'white' : 'dark'}
+                underline={false}
+                href={`/#/item/${v.id}`}
+              >
+                <Title order={3} weight={300}>
+                  {v.title ? v.title : v.url}
+                </Title>
+              </Anchor>
+              <Text>{v.published_at.format('Do MMMM YYYY')}</Text>
+            </Flex>
           ))}
         </Flex>
         <Flex justify="center" mb="md">

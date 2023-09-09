@@ -30,7 +30,7 @@ const initialState: State = {
   showError: false,
   createModalShown: false,
   createModalURL: '',
-  createModalMediaItemType: MediaItemType.Video,
+  createModalMediaItemType: 'video',
 };
 
 const slice = createSlice({
@@ -88,7 +88,7 @@ const slice = createSlice({
     builder.addCase(createMediaItem.fulfilled, state => {
       state.loading = false;
 
-      state.createModalMediaItemType = MediaItemType.Video;
+      state.createModalMediaItemType = 'video';
       state.createModalURL = '';
       state.createModalShown = false;
     });

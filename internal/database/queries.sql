@@ -52,6 +52,7 @@ SELECT *
   FROM topics
   WHERE user_id = @user_id::uuid
     AND name ILIKE '%' || @query::text || '%'
+    AND state = 'processed'
   ORDER BY name ASC
   LIMIT @page_limit::int
   OFFSET @page_offset::int;
