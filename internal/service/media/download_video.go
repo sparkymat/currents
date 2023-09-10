@@ -8,8 +8,10 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"time"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/labstack/gommon/log"
 	"github.com/sparkymat/currents/internal/dbtypes"
 	"github.com/sparkymat/currents/internal/dbx"
@@ -68,6 +70,8 @@ func (s *Service) DownloadVideo(ctx context.Context, id uuid.UUID) error {
 
 	var title string
 
+	var publishedAt pgtype.Timestamp
+
 	metadata := dbtypes.JSON{}
 
 	for _, entry := range entries {
@@ -95,6 +99,14 @@ func (s *Service) DownloadVideo(ctx context.Context, id uuid.UUID) error {
 			if iErr == nil {
 				if iErr = json.Unmarshal(metadataBytes, &metadata); iErr == nil {
 					title = metadata["title"].(string)
+
+					publishedAtTime, err := time.Parse("20060102", metadata["upload_date"].(string))
+					if err == nil {
+						publishedAt = pgtype.Timestamp{
+							Valid: true,
+							Time:  publishedAtTime,
+						}
+					}
 				}
 			}
 		}
@@ -108,9 +120,10 @@ func (s *Service) DownloadVideo(ctx context.Context, id uuid.UUID) error {
 		Transcript:        transcript,
 		Title:             title,
 		Metadata:          metadata,
+		PublishedAt:       publishedAt,
 	})
 	if err != nil {
-		log.Warnf("failed to mark ready video with id=%s", id)
+		log.Warnf("failed to mark ready video with id=%s. err: %s", id, err)
 
 		return fmt.Errorf("failed to mark as ready. err: %w", err)
 	}

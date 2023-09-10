@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 15.4
--- Dumped by pg_dump version 15.4
+-- Dumped from database version 15.3
+-- Dumped by pg_dump version 15.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -81,7 +81,7 @@ CREATE TABLE public.media_items (
     title text NOT NULL,
     url text NOT NULL,
     item_type public.media_item_type NOT NULL,
-    published_at timestamp without time zone NOT NULL,
+    published_at timestamp without time zone,
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     state public.media_item_state DEFAULT 'pending'::public.media_item_state NOT NULL,

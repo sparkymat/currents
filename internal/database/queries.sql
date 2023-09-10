@@ -6,7 +6,7 @@ SELECT * FROM media_items
 
 -- name: MarkVideoMediaItemAsProcessed :exec
 UPDATE media_items
-  SET state = 'processed', video_file_path = @video_file_path::text, thumbnail_file_path = @thumbnail_file_path::text, subtitle_file_paths = @subtitle_file_paths::text[], transcript = @transcript::text, title = @title::text, metadata = @metadata::jsonb
+  SET state = 'processed', video_file_path = @video_file_path::text, thumbnail_file_path = @thumbnail_file_path::text, subtitle_file_paths = @subtitle_file_paths::text[], transcript = @transcript::text, title = @title::text, metadata = @metadata::jsonb, published_at = @published_at::timestamp
   WHERE id = @media_item_id::uuid;
 
 -- name: MarkMediaItemAsProcessing :exec
@@ -24,6 +24,14 @@ SELECT *
   FROM media_items
   WHERE id = ANY(@media_item_ids::uuid[])
     AND user_id = @user_id::uuid;
+
+-- name: FetchTopicsForMediaItem :many
+SELECT t.*
+  FROM media_item_topics mit
+  INNER JOIN media_items mi ON mi.id = mit.media_item_id
+  INNER JOIN topics t ON t.id = mit.topic_id
+  WHERE mit.media_item_id = @media_item_id::uuid
+    AND mi.user_id = @user_id::uuid;
 
 -- name: FetchMediaItemTopicsForMediaItems :many
 SELECT mit.*
@@ -58,7 +66,6 @@ SELECT *
   FROM topics
   WHERE user_id = @user_id::uuid
     AND name ILIKE '%' || @query::text || '%'
-    AND state = 'processed'
   ORDER BY name ASC
   LIMIT @page_limit::int
   OFFSET @page_offset::int;
@@ -79,13 +86,15 @@ DELETE FROM media_items
 SELECT COUNT(*)
   FROM media_items
   WHERE user_id = @user_id::uuid
-    AND title ILIKE '%' || @query::text || '%';
+    AND title ILIKE '%' || @query::text || '%'
+    AND state = 'processed';
 
 -- name: SearchMediaItems :many
 SELECT * 
   FROM media_items
   WHERE user_id = @user_id::uuid
     AND title ILIKE '%' || @query::text || '%'
+    AND state = 'processed'
   ORDER BY published_at DESC
   LIMIT @page_limit::int
   OFFSET @page_offset::int;
