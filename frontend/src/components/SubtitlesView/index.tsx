@@ -29,15 +29,20 @@ const SubtitlesView = ({ entries, onTimestampClicked }: SubtitlesViewProps) => (
     {entries.map(e => (
       <Flex direction="column">
         <Flex>
-          <Anchor onClick={() => onTimestampClicked(e.start_ms)}>
-            <Text>{`${msToString(e.start_ms)} - ${msToString(e.end_ms)}`}</Text>
+          <Anchor
+            underline={false}
+            onClick={() => onTimestampClicked(e.start_ms)}
+          >
+            <Text size="sm" italic>{`${msToString(e.start_ms)} - ${msToString(
+              e.end_ms,
+            )}`}</Text>
           </Anchor>
         </Flex>
         {e.lines.map(line => (
           <>
             {line.speaker && <Title>{line.speaker}</Title>}
             {line.lines.map(innerLine => (
-              <Text>{innerLine}</Text>
+              <Text size="lg">{innerLine}</Text>
             ))}
           </>
         ))}
