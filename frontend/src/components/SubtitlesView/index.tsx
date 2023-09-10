@@ -16,11 +16,11 @@ const msToString = (ms: number): string => {
   const hours = Math.floor(ms / (3600 * 1000));
   const minutes = Math.floor(ms / (60 * 1000)) % 60;
   const seconds = Math.floor(ms / 1000) % 60;
-  const milliseconds = ms % 1000;
+  const centiseconds = Math.round(ms / 10);
 
   return `${hours}:${pad(minutes, 2)}:${pad(seconds, 2)}.${pad(
-    milliseconds,
-    3,
+    centiseconds,
+    2,
   )}`;
 };
 
