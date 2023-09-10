@@ -20,7 +20,7 @@ func MediaItemsShow(cfg handler.ConfigService, s internal.Services) echo.Handler
 			return renderError(c, http.StatusBadRequest, "invalid id", err)
 		}
 
-		item, err := s.Media.FetchMediaItem(
+		item, topics, err := s.Media.FetchMediaItem(
 			c.Request().Context(),
 			user.ID,
 			mediaItemID,
@@ -29,7 +29,7 @@ func MediaItemsShow(cfg handler.ConfigService, s internal.Services) echo.Handler
 			return renderError(c, http.StatusInternalServerError, "failed to fetch item", err)
 		}
 
-		presentedItem := presenter.DetailedMediaItemFromModel(item)
+		presentedItem := presenter.DetailedMediaItemFromModel(item, topics)
 
 		return c.JSON(http.StatusOK, presentedItem)
 	})

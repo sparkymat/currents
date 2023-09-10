@@ -38,14 +38,16 @@ type DetailedMediaItem struct {
 	MediaItem
 	Transcript []SubtitleEntry `json:"transcript"`
 	Metadata   dbtypes.JSON    `json:"metadata"`
+	Topics     []Topic         `json:"topics"`
 }
 
-func DetailedMediaItemFromModel(m dbx.MediaItem) DetailedMediaItem {
+func DetailedMediaItemFromModel(m dbx.MediaItem, topics []dbx.Topic) DetailedMediaItem {
 	item := MediaItemFromModel(m)
 
 	detailedItem := DetailedMediaItem{
 		MediaItem: item,
 		Metadata:  m.Metadata,
+		Topics:    lo.Map(topics, func(t dbx.Topic, _ int) Topic { return TopicFromModel(t) }),
 	}
 
 	if m.Transcript.Valid {

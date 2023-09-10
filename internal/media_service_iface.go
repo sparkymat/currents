@@ -27,5 +27,5 @@ type MediaService interface {
 		ctx context.Context,
 		userID uuid.UUID,
 		mediaItemID uuid.UUID,
-	) (dbx.MediaItem, error)
+	) (dbx.MediaItem, []dbx.Topic, error)
 }
