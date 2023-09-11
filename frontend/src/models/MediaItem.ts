@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { Subtitle, SubtitleEntry } from './Subtitle';
+import Topic from './Topic';
 
 export type MediaItemType = 'video' | 'article';
 
@@ -215,6 +216,8 @@ class MediaItem {
 
   public metadata?: { [key: string]: any };
 
+  public topics: Topic[];
+
   constructor(json: any) {
     this.id = json.id;
     this.title = json.title;
@@ -225,6 +228,12 @@ class MediaItem {
     this.published_at = moment(json.published_at);
     this.video_url = json.video_url;
     this.thumbnail_url = json.thumbnail_url;
+
+    this.topics = [];
+
+    if (json.topics) {
+      this.topics = json.topics;
+    }
 
     this.subtitles = json.subtitle_urls.map(surl => {
       const parts = surl.split('.');

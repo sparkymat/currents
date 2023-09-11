@@ -27,4 +27,5 @@ type DatabaseProvider interface {
 	RemoveTopicFromMediaItem(ctx context.Context, arg dbx.RemoveTopicFromMediaItemParams) error
 	SearchMediaItems(ctx context.Context, arg dbx.SearchMediaItemsParams) ([]dbx.MediaItem, error)
 	SearchTopics(ctx context.Context, arg dbx.SearchTopicsParams) ([]dbx.Topic, error)
+	UpdateTopicKeywords(ctx context.Context, arg dbx.UpdateTopicKeywordsParams) (dbx.Topic, error)
 }

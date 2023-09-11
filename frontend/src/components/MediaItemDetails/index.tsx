@@ -24,6 +24,7 @@ import {
 import { dismissError } from '../../features/MediaItemDetails/slice';
 import fetchMediaItem from '../../features/MediaItemDetails/fetchMediaItem';
 import SubtitlesView from '../SubtitlesView';
+import MediaItemTopicsList from '../MediaItemTopicList';
 
 const MediaItemDetails = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -112,7 +113,11 @@ const MediaItemDetails = () => {
               </ScrollArea.Autosize>
             </Tabs.Panel>
             <Tabs.Panel value="topics">
-              <Flex>topics</Flex>
+              <ScrollArea.Autosize mah={400} p="xs">
+                {item?.transcript && (
+                  <MediaItemTopicsList topics={item.topics} />
+                )}
+              </ScrollArea.Autosize>
             </Tabs.Panel>
           </Tabs>
         </Flex>

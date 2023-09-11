@@ -70,11 +70,17 @@ SELECT *
   LIMIT @page_limit::int
   OFFSET @page_offset::int;
 
+-- name: UpdateTopicKeywords :one
+UPDATE topics
+  SET keywords = @keywords::text[]
+WHERE user_id = @user_id::uuid AND id = @topic_id::uuid
+RETURNING *;
+
 -- name: CreateTopic :one
 INSERT INTO topics
-(user_id, title, description)
+(user_id, title, description, keywords)
 VALUES
-(@user_id::uuid, @title::text, @description::text)
+(@user_id::uuid, @title::text, @description::text, @keywords::text[])
 RETURNING *;
 
 -- name: DeleteMediaItem :exec
