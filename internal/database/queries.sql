@@ -53,12 +53,12 @@ SELECT mit.*
 
 -- name: RemoveTopicFromMediaItem :exec
 DELETE FROM media_item_topics
-WHERE user_id = @user_id::uuid AND media_item_id = @media_item_id::uuid AND topic_id = @topic_id::uuid;
+WHERE media_item_id = @media_item_id::uuid AND topic_id = @topic_id::uuid;
 
 -- name: ConfirmTopicForMediaItem :exec
 UPDATE media_item_topics
 SET confirmed_at = CURRENT_TIMESTAMP
-WHERE user_id = @user_id::uuid AND media_item_id = @media_item_id::uuid AND topic_id = @topic_id::uuid;
+WHERE media_item_id = @media_item_id::uuid AND topic_id = @topic_id::uuid;
 
 -- name: AddTopicToMediaItem :exec
 INSERT INTO media_item_topics

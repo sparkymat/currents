@@ -33,4 +33,16 @@ type MediaService interface {
 		userID uuid.UUID,
 		mediaItemID uuid.UUID,
 	) error
+	ConfirmMediaItemTopic(
+		ctx context.Context,
+		userID uuid.UUID,
+		mediaItemID uuid.UUID,
+		topicID uuid.UUID,
+	) error
+	DestroyMediaItemTopic(
+		ctx context.Context,
+		userID uuid.UUID,
+		mediaItemID uuid.UUID,
+		topicID uuid.UUID,
+	) error
 }

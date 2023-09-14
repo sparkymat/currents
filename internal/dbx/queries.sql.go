@@ -33,17 +33,16 @@ func (q *Queries) AddTopicToMediaItem(ctx context.Context, arg AddTopicToMediaIt
 const confirmTopicForMediaItem = `-- name: ConfirmTopicForMediaItem :exec
 UPDATE media_item_topics
 SET confirmed_at = CURRENT_TIMESTAMP
-WHERE user_id = $1::uuid AND media_item_id = $2::uuid AND topic_id = $3::uuid
+WHERE media_item_id = $1::uuid AND topic_id = $2::uuid
 `
 
 type ConfirmTopicForMediaItemParams struct {
-	UserID      uuid.UUID
 	MediaItemID uuid.UUID
 	TopicID     uuid.UUID
 }
 
 func (q *Queries) ConfirmTopicForMediaItem(ctx context.Context, arg ConfirmTopicForMediaItemParams) error {
-	_, err := q.db.Exec(ctx, confirmTopicForMediaItem, arg.UserID, arg.MediaItemID, arg.TopicID)
+	_, err := q.db.Exec(ctx, confirmTopicForMediaItem, arg.MediaItemID, arg.TopicID)
 	return err
 }
 
@@ -499,17 +498,16 @@ func (q *Queries) MarkVideoMediaItemAsProcessed(ctx context.Context, arg MarkVid
 
 const removeTopicFromMediaItem = `-- name: RemoveTopicFromMediaItem :exec
 DELETE FROM media_item_topics
-WHERE user_id = $1::uuid AND media_item_id = $2::uuid AND topic_id = $3::uuid
+WHERE media_item_id = $1::uuid AND topic_id = $2::uuid
 `
 
 type RemoveTopicFromMediaItemParams struct {
-	UserID      uuid.UUID
 	MediaItemID uuid.UUID
 	TopicID     uuid.UUID
 }
 
 func (q *Queries) RemoveTopicFromMediaItem(ctx context.Context, arg RemoveTopicFromMediaItemParams) error {
-	_, err := q.db.Exec(ctx, removeTopicFromMediaItem, arg.UserID, arg.MediaItemID, arg.TopicID)
+	_, err := q.db.Exec(ctx, removeTopicFromMediaItem, arg.MediaItemID, arg.TopicID)
 	return err
 }
 

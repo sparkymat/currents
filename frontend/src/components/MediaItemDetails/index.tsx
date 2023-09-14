@@ -30,6 +30,8 @@ import fetchMediaItem from '../../features/MediaItemDetails/fetchMediaItem';
 import SubtitlesView from '../SubtitlesView';
 import MediaItemTopicsList from '../MediaItemTopicList';
 import rescanMediaItem from '../../features/MediaItemDetails/rescanMediaItem';
+import confirmMediaItemTopic from '../../features/MediaItemDetails/confirmMediaItemTopic';
+import deleteMediaItemTopic from '../../features/MediaItemDetails/deleteMediaItemTopic';
 
 const MediaItemDetails = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -69,6 +71,30 @@ const MediaItemDetails = () => {
   const rescanClicked = useCallback(() => {
     dispatch(rescanMediaItem(id || ''));
   }, [dispatch, id]);
+
+  const confirmTopicClicked = useCallback(
+    (topicID: string) => {
+      dispatch(
+        confirmMediaItemTopic({
+          mediaItemID: id || '',
+          topicID,
+        }),
+      );
+    },
+    [dispatch, id],
+  );
+
+  const deleteTopicClicked = useCallback(
+    (topicID: string) => {
+      dispatch(
+        deleteMediaItemTopic({
+          mediaItemID: id || '',
+          topicID,
+        }),
+      );
+    },
+    [dispatch, id],
+  );
 
   return (
     <Container size="lg" pb="lg">
@@ -142,7 +168,13 @@ const MediaItemDetails = () => {
               </Flex>
             </Card.Section>
             <ScrollArea.Autosize h={300} p="xs">
-              {item?.transcript && <MediaItemTopicsList topics={item.topics} />}
+              {item?.transcript && (
+                <MediaItemTopicsList
+                  topics={item.topics}
+                  topicDeleteClicked={deleteTopicClicked}
+                  topicConfirmClicked={confirmTopicClicked}
+                />
+              )}
             </ScrollArea.Autosize>
             <Card.Section p="sm">
               <Flex>

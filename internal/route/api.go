@@ -25,4 +25,6 @@ func registerAPIRoutes(app *echo.Group, cfg ConfigService, s internal.Services) 
 	apiGroup.GET("/media_items", api.MediaItemsSearch(cfg, s))
 	apiGroup.GET("/media_items/:id", api.MediaItemsShow(cfg, s))
 	apiGroup.POST("/media_items/:id/rescan", api.MediaItemsRescan(cfg, s))
+	apiGroup.POST("/media_items/:id/topics/:topic_id/confirm", api.MediaItemTopicsConfirm(cfg, s))
+	apiGroup.DELETE("/media_items/:id/topics/:topic_id", api.MediaItemTopicsDestroy(cfg, s))
 }

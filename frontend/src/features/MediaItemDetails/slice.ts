@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import MediaItem from '../../models/MediaItem';
 import fetchMediaItem from './fetchMediaItem';
 import rescanMediaItem from './rescanMediaItem';
+import confirmMediaItemTopic from './confirmMediaItemTopic';
+import deleteMediaItemTopic from './deleteMediaItemTopic';
 
 export interface State {
   item?: MediaItem;
@@ -46,6 +48,30 @@ const slice = createSlice({
       state.loading = false;
     });
     builder.addCase(rescanMediaItem.rejected, (state, action) => {
+      state.loading = false;
+      state.errorMessage = action.error.message || 'unknown error';
+      state.showError = true;
+    });
+
+    builder.addCase(confirmMediaItemTopic.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(confirmMediaItemTopic.fulfilled, state => {
+      state.loading = false;
+    });
+    builder.addCase(confirmMediaItemTopic.rejected, (state, action) => {
+      state.loading = false;
+      state.errorMessage = action.error.message || 'unknown error';
+      state.showError = true;
+    });
+
+    builder.addCase(deleteMediaItemTopic.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(deleteMediaItemTopic.fulfilled, state => {
+      state.loading = false;
+    });
+    builder.addCase(deleteMediaItemTopic.rejected, (state, action) => {
       state.loading = false;
       state.errorMessage = action.error.message || 'unknown error';
       state.showError = true;
