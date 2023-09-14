@@ -2,7 +2,8 @@
 SELECT DISTINCT t.* FROM topics t
   LEFT OUTER JOIN topic_keywords tk ON tk.topic_id = t.id
   INNER JOIN media_items mi ON mi.id = @media_item_id::uuid
-  WHERE mi.transcript ILIKE '%' || tk.label || '%';
+  WHERE mi.transcript ILIKE '%' || tk.label || '%'
+    OR mi.metadata->>'description' ILIKE '%' || tk.label || '%';
 
 -- name: FetchMediaItemForUser :one
 SELECT * FROM media_items

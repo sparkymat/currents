@@ -516,6 +516,7 @@ SELECT DISTINCT t.id, t.user_id, t.name, t.description, t.created_at, t.updated_
   LEFT OUTER JOIN topic_keywords tk ON tk.topic_id = t.id
   INNER JOIN media_items mi ON mi.id = $1::uuid
   WHERE mi.transcript ILIKE '%' || tk.label || '%'
+    OR mi.metadata->>'description' ILIKE '%' || tk.label || '%'
 `
 
 func (q *Queries) ScanMediaItemForTopics(ctx context.Context, mediaItemID uuid.UUID) ([]Topic, error) {

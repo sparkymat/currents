@@ -168,13 +168,11 @@ const MediaItemDetails = () => {
               </Flex>
             </Card.Section>
             <ScrollArea.Autosize h={300} p="xs">
-              {item?.transcript && (
-                <MediaItemTopicsList
-                  topics={item.topics}
-                  topicDeleteClicked={deleteTopicClicked}
-                  topicConfirmClicked={confirmTopicClicked}
-                />
-              )}
+              <MediaItemTopicsList
+                topics={item?.topics || []}
+                topicDeleteClicked={deleteTopicClicked}
+                topicConfirmClicked={confirmTopicClicked}
+              />
             </ScrollArea.Autosize>
             <Card.Section p="sm">
               <Flex>

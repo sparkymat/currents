@@ -23,7 +23,7 @@ const MediaItemTopicList = ({
             {topics
               .filter(t => t.confirmed)
               .map(t => (
-                <tr>
+                <tr key={t.id}>
                   <td>
                     <Flex>
                       <Title order={6} sx={{ flex: 1 }}>
@@ -59,7 +59,7 @@ const MediaItemTopicList = ({
             {topics
               .filter(t => !t.confirmed)
               .map(t => (
-                <tr>
+                <tr key={t.id}>
                   <td>
                     <Flex>
                       <Title order={6} sx={{ flex: 1 }}>
