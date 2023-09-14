@@ -18,6 +18,10 @@ func (s *Service) RescanMediaItem(ctx context.Context, userID uuid.UUID, mediaIt
 		return fmt.Errorf("error fetching media item: %w", err)
 	}
 
+	return s.scanMediaItemForTopics(ctx, userID, mediaItemID)
+}
+
+func (s *Service) scanMediaItemForTopics(ctx context.Context, userID uuid.UUID, mediaItemID uuid.UUID) error {
 	scannedTopics, err := s.db.ScanMediaItemForTopics(ctx, mediaItemID)
 	if err != nil {
 		return fmt.Errorf("error scanning media item for topics: %w", err)

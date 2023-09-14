@@ -128,6 +128,13 @@ func (s *Service) DownloadVideo(ctx context.Context, id uuid.UUID) error {
 		return fmt.Errorf("failed to mark as ready. err: %w", err)
 	}
 
+	err = s.scanMediaItemForTopics(ctx, item.UserID, id)
+	if err != nil {
+		log.Warnf("failed to scan media item for topics with id=%s. err: %s", id, err)
+
+		return fmt.Errorf("failed to scan media item for topics. err: %w", err)
+	}
+
 	return nil
 }
 
