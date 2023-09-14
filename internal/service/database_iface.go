@@ -20,11 +20,13 @@ type DatabaseProvider interface {
 	FetchMediaItemForUser(ctx context.Context, arg dbx.FetchMediaItemForUserParams) (dbx.MediaItem, error)
 	FetchMediaItemTopicsForMediaItems(ctx context.Context, arg dbx.FetchMediaItemTopicsForMediaItemsParams) ([]dbx.MediaItemTopic, error)
 	FetchMediaItemsByID(ctx context.Context, arg dbx.FetchMediaItemsByIDParams) ([]dbx.MediaItem, error)
-	FetchTopicsForMediaItem(ctx context.Context, arg dbx.FetchTopicsForMediaItemParams) ([]dbx.Topic, error)
+	FetchMediaItemTopicsForMediaItem(ctx context.Context, arg dbx.FetchMediaItemTopicsForMediaItemParams) ([]dbx.MediaItemTopic, error)
+	FetchTopicsByID(ctx context.Context, arg dbx.FetchTopicsByIDParams) ([]dbx.Topic, error)
 	FetchUserByUsername(ctx context.Context, username string) (dbx.User, error)
 	MarkVideoMediaItemAsProcessed(ctx context.Context, arg dbx.MarkVideoMediaItemAsProcessedParams) error
 	MarkMediaItemAsProcessing(ctx context.Context, mediaItemID uuid.UUID) error
 	RemoveTopicFromMediaItem(ctx context.Context, arg dbx.RemoveTopicFromMediaItemParams) error
+	ScanMediaItemForTopics(ctx context.Context, mediaItemID uuid.UUID) ([]dbx.Topic, error)
 	SearchMediaItems(ctx context.Context, arg dbx.SearchMediaItemsParams) ([]dbx.MediaItem, error)
 	SearchTopics(ctx context.Context, arg dbx.SearchTopicsParams) ([]dbx.Topic, error)
 	UpdateTopicKeywords(ctx context.Context, arg dbx.UpdateTopicKeywordsParams) (dbx.Topic, error)

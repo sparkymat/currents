@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import MediaItem from '../../models/MediaItem';
 import fetchMediaItem from './fetchMediaItem';
+import rescanMediaItem from './rescanMediaItem';
 
 export interface State {
   item?: MediaItem;
@@ -33,6 +34,18 @@ const slice = createSlice({
       state.item = action.payload;
     });
     builder.addCase(fetchMediaItem.rejected, (state, action) => {
+      state.loading = false;
+      state.errorMessage = action.error.message || 'unknown error';
+      state.showError = true;
+    });
+
+    builder.addCase(rescanMediaItem.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(rescanMediaItem.fulfilled, state => {
+      state.loading = false;
+    });
+    builder.addCase(rescanMediaItem.rejected, (state, action) => {
       state.loading = false;
       state.errorMessage = action.error.message || 'unknown error';
       state.showError = true;

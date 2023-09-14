@@ -64,7 +64,7 @@ func (s *Service) DownloadVideo(ctx context.Context, id uuid.UUID) error {
 
 	var videoFile, thumbnailFile string
 
-	var subtitleFiles []string
+	subtitleFiles := []string{}
 
 	var transcript string
 

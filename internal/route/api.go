@@ -24,4 +24,5 @@ func registerAPIRoutes(app *echo.Group, cfg ConfigService, s internal.Services) 
 	apiGroup.POST("/media_items", api.MediaItemsCreate(cfg, s))
 	apiGroup.GET("/media_items", api.MediaItemsSearch(cfg, s))
 	apiGroup.GET("/media_items/:id", api.MediaItemsShow(cfg, s))
+	apiGroup.POST("/media_items/:id/rescan", api.MediaItemsRescan(cfg, s))
 }

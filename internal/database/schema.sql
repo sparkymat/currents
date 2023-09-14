@@ -104,6 +104,19 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: topic_keywords; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.topic_keywords (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    topic_id uuid NOT NULL,
+    label text NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+--
 -- Name: topics; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -113,8 +126,7 @@ CREATE TABLE public.topics (
     name text NOT NULL,
     description text DEFAULT ''::text NOT NULL,
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    keywords text[] DEFAULT '{}'::text[] NOT NULL
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 
@@ -154,6 +166,14 @@ ALTER TABLE ONLY public.media_items
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: topic_keywords topic_keywords_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.topic_keywords
+    ADD CONSTRAINT topic_keywords_pkey PRIMARY KEY (id);
 
 
 --
@@ -202,6 +222,13 @@ CREATE TRIGGER media_items_updated_at BEFORE UPDATE ON public.media_items FOR EA
 
 
 --
+-- Name: topic_keywords topic_keywords_updated_at; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER topic_keywords_updated_at BEFORE UPDATE ON public.topic_keywords FOR EACH ROW EXECUTE FUNCTION public.moddatetime('updated_at');
+
+
+--
 -- Name: topics topics_updated_at; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -237,6 +264,14 @@ ALTER TABLE ONLY public.media_item_topics
 
 ALTER TABLE ONLY public.media_items
     ADD CONSTRAINT media_items_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: topic_keywords topic_keywords_topic_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.topic_keywords
+    ADD CONSTRAINT topic_keywords_topic_id_fkey FOREIGN KEY (topic_id) REFERENCES public.topics(id) ON DELETE CASCADE;
 
 
 --

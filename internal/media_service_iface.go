@@ -27,5 +27,10 @@ type MediaService interface {
 		ctx context.Context,
 		userID uuid.UUID,
 		mediaItemID uuid.UUID,
-	) (dbx.MediaItem, []dbx.Topic, error)
+	) (dbx.MediaItem, []dbx.MediaItemTopic, map[uuid.UUID]dbx.Topic, error)
+	RescanMediaItem(
+		ctx context.Context,
+		userID uuid.UUID,
+		mediaItemID uuid.UUID,
+	) error
 }

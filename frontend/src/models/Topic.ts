@@ -7,6 +7,8 @@ class Topic {
 
   public keywords: string[];
 
+  public confirmed: boolean;
+
   constructor(json: any) {
     this.id = json.id;
     this.name = json.name;

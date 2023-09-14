@@ -8,10 +8,9 @@ import (
 	"github.com/sparkymat/currents/internal"
 	"github.com/sparkymat/currents/internal/dbx"
 	"github.com/sparkymat/currents/internal/handler"
-	"github.com/sparkymat/currents/internal/handler/api/presenter"
 )
 
-func MediaItemsShow(cfg handler.ConfigService, s internal.Services) echo.HandlerFunc {
+func MediaItemsRescan(_ handler.ConfigService, s internal.Services) echo.HandlerFunc {
 	return wrapWithAuth(func(c echo.Context, user dbx.User) error {
 		idString := c.Param("id")
 
@@ -20,17 +19,15 @@ func MediaItemsShow(cfg handler.ConfigService, s internal.Services) echo.Handler
 			return renderError(c, http.StatusBadRequest, "invalid id", err)
 		}
 
-		item, mediaItemTopics, topicsMap, err := s.Media.FetchMediaItem(
+		err = s.Media.RescanMediaItem(
 			c.Request().Context(),
 			user.ID,
 			mediaItemID,
 		)
 		if err != nil {
-			return renderError(c, http.StatusInternalServerError, "failed to fetch item", err)
+			return renderError(c, http.StatusInternalServerError, "failed to rescan item", err)
 		}
 
-		presentedItem := presenter.DetailedMediaItemFromModel(item, mediaItemTopics, topicsMap)
-
-		return c.JSON(http.StatusOK, presentedItem)
+		return c.NoContent(http.StatusNoContent)
 	})
 }

@@ -36,19 +36,29 @@ type MediaItem struct {
 
 type DetailedMediaItem struct {
 	MediaItem
-	Transcript []SubtitleEntry `json:"transcript"`
-	Metadata   dbtypes.JSON    `json:"metadata"`
-	Topics     []Topic         `json:"topics"`
+	Transcript []SubtitleEntry  `json:"transcript"`
+	Metadata   dbtypes.JSON     `json:"metadata"`
+	Topics     []MediaItemTopic `json:"topics"`
 }
 
-func DetailedMediaItemFromModel(m dbx.MediaItem, topics []dbx.Topic) DetailedMediaItem {
+func DetailedMediaItemFromModel(m dbx.MediaItem, mediaItemTopics []dbx.MediaItemTopic, topicsMap map[uuid.UUID]dbx.Topic) DetailedMediaItem {
 	item := MediaItemFromModel(m)
 
 	detailedItem := DetailedMediaItem{
 		MediaItem: item,
 		Metadata:  m.Metadata,
-		Topics:    lo.Map(topics, func(t dbx.Topic, _ int) Topic { return TopicFromModel(t) }),
 	}
+
+	topics := []MediaItemTopic{}
+
+	for _, mediaItemTopic := range mediaItemTopics {
+		topic, ok := topicsMap[mediaItemTopic.TopicID]
+		if ok {
+			topics = append(topics, MediaItemTopicFromModel(topic, mediaItemTopic))
+		}
+	}
+
+	detailedItem.Topics = topics
 
 	if m.Transcript.Valid {
 		parsedSubtitles, err := astisub.ReadFromWebVTT(strings.NewReader(m.Transcript.String))

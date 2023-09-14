@@ -22,7 +22,7 @@ const MediaItemTopicList = ({ topics }: MediaItemTopicListProps) => (
               </Flex>
             </td>
             <td width={20}>
-              <Menu position="bottom-end" width={200}>
+              <Menu>
                 <Menu.Target>
                   <ActionIcon>
                     <IconDotsVertical size={14} />
@@ -30,6 +30,13 @@ const MediaItemTopicList = ({ topics }: MediaItemTopicListProps) => (
                 </Menu.Target>
 
                 <Menu.Dropdown>
+                  <Menu.Item
+                    component="a"
+                    href={`/#/topic/${t.id}`}
+                    target="_blank"
+                  >
+                    Open
+                  </Menu.Item>
                   <Menu.Item
                     component="a"
                     href={`/#/topic/${t.id}`}

@@ -1,3 +1,9 @@
+-- name: ScanMediaItemForTopics :many
+SELECT DISTINCT t.* FROM topics t
+  LEFT OUTER JOIN topic_keywords tk ON tk.topic_id = t.id
+  INNER JOIN media_items mi ON mi.id = @media_item_id::uuid
+  WHERE mi.transcript ILIKE '%' || tk.label || '%';
+
 -- name: FetchMediaItemForUser :one
 SELECT * FROM media_items
   WHERE id = @media_item_id::uuid
@@ -25,11 +31,16 @@ SELECT *
   WHERE id = ANY(@media_item_ids::uuid[])
     AND user_id = @user_id::uuid;
 
--- name: FetchTopicsForMediaItem :many
-SELECT t.*
+-- name: FetchTopicsByID :many
+SELECT *
+  FROM topics
+  WHERE id = ANY(@topic_ids::uuid[])
+    AND user_id = @user_id::uuid;
+
+-- name: FetchMediaItemTopicsForMediaItem :many
+SELECT mit.*
   FROM media_item_topics mit
   INNER JOIN media_items mi ON mi.id = mit.media_item_id
-  INNER JOIN topics t ON t.id = mit.topic_id
   WHERE mit.media_item_id = @media_item_id::uuid
     AND mi.user_id = @user_id::uuid;
 
@@ -51,9 +62,9 @@ WHERE user_id = @user_id::uuid AND media_item_id = @media_item_id::uuid AND topi
 
 -- name: AddTopicToMediaItem :exec
 INSERT INTO media_item_topics
-(user_id, media_item_id, topic_id)
+(media_item_id, topic_id)
 VALUES
-(@user_id::uuid, @media_item_id::uuid, @topic_id::uuid);
+(@media_item_id::uuid, @topic_id::uuid);
 
 -- name: CountSearchedTopics :one
 SELECT COUNT(*)

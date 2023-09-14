@@ -5,14 +5,18 @@ import {
   LoadingOverlay,
   Title,
   ScrollArea,
-  Tabs,
   Anchor,
+  Space,
+  Card,
+  Menu,
+  ActionIcon,
+  Button,
 } from '@mantine/core';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useParams } from 'react-router-dom';
-import { IconX } from '@tabler/icons-react';
+import { IconDotsVertical, IconX } from '@tabler/icons-react';
 
 import { AppDispatch } from '../../store';
 import {
@@ -25,6 +29,7 @@ import { dismissError } from '../../features/MediaItemDetails/slice';
 import fetchMediaItem from '../../features/MediaItemDetails/fetchMediaItem';
 import SubtitlesView from '../SubtitlesView';
 import MediaItemTopicsList from '../MediaItemTopicList';
+import rescanMediaItem from '../../features/MediaItemDetails/rescanMediaItem';
 
 const MediaItemDetails = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -61,6 +66,10 @@ const MediaItemDetails = () => {
     [videoElement],
   );
 
+  const rescanClicked = useCallback(() => {
+    dispatch(rescanMediaItem(id || ''));
+  }, [dispatch, id]);
+
   return (
     <Container size="lg" pb="lg">
       <Title mt="sm" order={1} weight={300}>
@@ -96,30 +105,61 @@ const MediaItemDetails = () => {
             <Title mt="xs" order={4} weight={300}>{`URL: ${item?.url}`}</Title>
           </Anchor>
         </Flex>
+        <Space w="sm" h="sm" />
         <Flex direction="column" sx={{ width: 360 }}>
-          <Tabs defaultValue="transcript" h={400}>
-            <Tabs.List>
-              <Tabs.Tab value="transcript">Transcript</Tabs.Tab>
-              <Tabs.Tab value="topics">Topics</Tabs.Tab>
-            </Tabs.List>
-            <Tabs.Panel value="transcript" pt="xs">
-              <ScrollArea.Autosize mah={400} p="xs">
-                {item?.transcript && (
-                  <SubtitlesView
-                    entries={item.transcript}
-                    onTimestampClicked={timestampClicked}
-                  />
-                )}
-              </ScrollArea.Autosize>
-            </Tabs.Panel>
-            <Tabs.Panel value="topics">
-              <ScrollArea.Autosize mah={400} p="xs">
-                {item?.transcript && (
-                  <MediaItemTopicsList topics={item.topics} />
-                )}
-              </ScrollArea.Autosize>
-            </Tabs.Panel>
-          </Tabs>
+          <Card title="Transcript">
+            <Card.Section withBorder inheritPadding py="xs">
+              <Title order={6}>Transcript</Title>
+            </Card.Section>
+            <ScrollArea.Autosize h={300} p="xs">
+              {item?.transcript && (
+                <SubtitlesView
+                  entries={item.transcript}
+                  onTimestampClicked={timestampClicked}
+                />
+              )}
+            </ScrollArea.Autosize>
+          </Card>
+          <Space h="md" />
+          <Card title="Transcript">
+            <Card.Section withBorder inheritPadding py="xs">
+              <Flex align="center">
+                <Title order={6} sx={{ flex: 1 }}>
+                  Topics
+                </Title>
+                <Menu>
+                  <Menu.Target>
+                    <ActionIcon>
+                      <IconDotsVertical size={14} />
+                    </ActionIcon>
+                  </Menu.Target>
+
+                  <Menu.Dropdown>
+                    <Menu.Item>Add topic</Menu.Item>
+                    <Menu.Item>Rescan for topics</Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+              </Flex>
+            </Card.Section>
+            <ScrollArea.Autosize h={300} p="xs">
+              {item?.transcript && <MediaItemTopicsList topics={item.topics} />}
+            </ScrollArea.Autosize>
+            <Card.Section p="sm">
+              <Flex>
+                <Button
+                  sx={{ flex: 1 }}
+                  variant="filled"
+                  onClick={rescanClicked}
+                >
+                  Re-scan
+                </Button>
+                <Space w="sm" />
+                <Button sx={{ flex: 1 }} variant="filled">
+                  Add
+                </Button>
+              </Flex>
+            </Card.Section>
+          </Card>
         </Flex>
       </Flex>
       {showError && (
