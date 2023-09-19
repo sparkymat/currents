@@ -1,29 +1,48 @@
 /* eslint-disable react/no-unknown-property */
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import {
   ActionIcon,
   Anchor,
   AppShell,
+  Burger,
   ColorScheme,
   Flex,
   Header,
+  MediaQuery,
   Menu,
+  Navbar,
+  NavLink,
   Title,
+  useMantineTheme,
 } from '@mantine/core';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocalStorage } from '@mantine/hooks';
-import { IconBrightness, IconSettings } from '@tabler/icons-react';
+import {
+  IconBrightness,
+  IconDashboard,
+  IconSettings,
+  IconTimelineEvent,
+} from '@tabler/icons-react';
 
 import { AppDispatch } from '../../store';
 import { updatePath } from '../../features/App/slice';
 import MediaItems from '../MediaItems';
 import MediaItemDetails from '../MediaItemDetails';
+import { selectPath } from '../../selectors/App';
+
+interface Path {
+  href: string;
+  label: string;
+  icon: React.JSX.Element;
+}
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const [opened, setOpened] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const theme = useMantineTheme();
 
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: 'currents-color-scheme',
@@ -34,6 +53,35 @@ const App = () => {
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
 
+  const currentPath = useSelector(selectPath);
+
+  const paths: Path[] = [
+    {
+      href: '/',
+      label: 'Feed',
+      icon: <IconDashboard size="1rem" stroke={1.5} />,
+    },
+    {
+      href: '/topics',
+      label: 'Topics',
+      icon: <IconTimelineEvent size="1rem" stroke={1.5} />,
+    },
+  ];
+
+  const onNavClick = useCallback(
+    (p: string) => {
+      dispatch(updatePath(p));
+      navigate(p);
+      setOpened(false);
+    },
+    [dispatch, navigate],
+  );
+
+  const isActive = useCallback(
+    (path: string): boolean => currentPath === path,
+    [currentPath],
+  );
+
   useEffect(() => {
     dispatch(updatePath(location.pathname));
   }, [dispatch, location]);
@@ -42,11 +90,39 @@ const App = () => {
     <div>
       <AppShell
         padding="md"
+        navbar={
+          <Navbar
+            p="md"
+            hiddenBreakpoint="sm"
+            hidden={!opened}
+            width={{ sm: 200, lg: 300 }}
+          >
+            {paths.map(p => (
+              <NavLink
+                label={p.label}
+                active={isActive(p.href)}
+                variant="subtle"
+                tt="uppercase"
+                icon={p.icon}
+                onClick={() => onNavClick(p.href)}
+              />
+            ))}
+          </Navbar>
+        }
         header={
           <Header height={{ base: 50, md: 70 }} p="md">
             <div
               style={{ display: 'flex', alignItems: 'center', height: '100%' }}
             >
+              <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+                <Burger
+                  opened={opened}
+                  onClick={() => setOpened(o => !o)}
+                  size="sm"
+                  color={theme.colors.gray[6]}
+                  mr="xl"
+                />
+              </MediaQuery>
               <Flex
                 justify="space-between"
                 align="center"
