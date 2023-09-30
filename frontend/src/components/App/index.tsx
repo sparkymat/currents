@@ -175,6 +175,11 @@ export const App = () => {
           <Route path="/item/:id" element={<MediaItemDetails />} />
           <Route path="/topics" element={<TopicsList />} />
           <Route path="/topics/p/:page" element={<TopicsList />} />
+          <Route path="/topics/search/:query" element={<TopicsList />} />
+          <Route
+            path="/topics/search/:query/p/:page"
+            element={<TopicsList />}
+          />
         </Routes>
       </AppShell>
     </div>
