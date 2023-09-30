@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import appReducer from '../features/App/slice';
-import mediaItemsReducer from '../features/MediaItems/slice';
-import mediaItemDetailsReducer from '../features/MediaItemDetails/slice';
+import { reducer as appReducer } from '../features/App/slice';
+import { reducer as mediaItemsReducer } from '../features/MediaItems/slice';
+import { reducer as mediaItemDetailsReducer } from '../features/MediaItemDetails/slice';
 
 export const store = configureStore({
   reducer: {

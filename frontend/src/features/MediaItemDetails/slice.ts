@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import MediaItem from '../../models/MediaItem';
-import fetchMediaItem from './fetchMediaItem';
-import rescanMediaItem from './rescanMediaItem';
-import confirmMediaItemTopic from './confirmMediaItemTopic';
-import deleteMediaItemTopic from './deleteMediaItemTopic';
+import { MediaItem } from '../../models/MediaItem';
+import { fetchMediaItem } from './fetchMediaItem';
+import { rescanMediaItem } from './rescanMediaItem';
+import { confirmMediaItemTopic } from './confirmMediaItemTopic';
+import { deleteMediaItemTopic } from './deleteMediaItemTopic';
 
 export interface State {
   item?: MediaItem;
@@ -81,4 +81,4 @@ const slice = createSlice({
 
 export const { dismissError } = slice.actions;
 
-export default slice.reducer;
+export const { reducer } = slice;

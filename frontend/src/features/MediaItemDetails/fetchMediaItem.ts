@@ -1,8 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import MediaItem from '../../models/MediaItem';
+import { MediaItem } from '../../models/MediaItem';
 
-const fetchMediaItem = createAsyncThunk<MediaItem, string>(
+export const fetchMediaItem = createAsyncThunk<MediaItem, string>(
   'mediaItemDetails/fetchMediaItem',
   async id => {
     const url = `/api/media_items/${id}`;
@@ -12,5 +12,3 @@ const fetchMediaItem = createAsyncThunk<MediaItem, string>(
     return new MediaItem(response.data);
   },
 );
-
-export default fetchMediaItem;

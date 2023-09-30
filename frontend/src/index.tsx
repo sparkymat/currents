@@ -11,7 +11,7 @@ import { Notifications } from '@mantine/notifications';
 import { useLocalStorage } from '@mantine/hooks';
 
 import { store } from './store';
-import App from './components/App';
+import { App } from './components/App';
 
 const StyledApp = () => {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({

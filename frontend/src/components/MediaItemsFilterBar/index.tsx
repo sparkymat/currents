@@ -10,7 +10,7 @@ export interface MediaItemsFilterBarProps {
   onNewClicked();
 }
 
-const MediaItemsFilterBar = ({
+export const MediaItemsFilterBar = ({
   query,
   onQueryChanged,
   filterLocation,
@@ -50,5 +50,3 @@ const MediaItemsFilterBar = ({
     </Paper>
   );
 };
-
-export default MediaItemsFilterBar;

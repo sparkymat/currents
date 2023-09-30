@@ -6,11 +6,11 @@ import Topic from '../../models/Topic';
 
 export interface MediaItemTopicListProps {
   topics: Topic[];
-  topicDeleteClicked(id: string);
-  topicConfirmClicked(id: string);
+  topicDeleteClicked(_id: string);
+  topicConfirmClicked(_id: string);
 }
 
-const MediaItemTopicList = ({
+export const MediaItemTopicList = ({
   topics,
   topicConfirmClicked,
   topicDeleteClicked,
@@ -94,5 +94,3 @@ const MediaItemTopicList = ({
     )}
   </Flex>
 );
-
-export default MediaItemTopicList;

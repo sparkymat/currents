@@ -1,13 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import fetchMediaItem from './fetchMediaItem';
+import { fetchMediaItem } from './fetchMediaItem';
 
 export interface DeleteMediaItemTopicRequest {
   mediaItemID: string;
   topicID: string;
 }
 
-const deleteMediaItemTopic = createAsyncThunk<
+export const deleteMediaItemTopic = createAsyncThunk<
   void,
   DeleteMediaItemTopicRequest
 >(
@@ -25,5 +25,3 @@ const deleteMediaItemTopic = createAsyncThunk<
     thunkAPI.dispatch(fetchMediaItem(mediaItemID));
   },
 );
-
-export default deleteMediaItemTopic;

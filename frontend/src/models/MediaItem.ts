@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { Subtitle, SubtitleEntry } from './Subtitle';
-import Topic from './Topic';
+import { Topic } from './Topic';
 
 export type MediaItemType = 'video' | 'article';
 
@@ -193,7 +193,7 @@ export const ISO639_1 = {
   zu: 'Zulu',
 };
 
-class MediaItem {
+export class MediaItem {
   public id: string;
 
   public title: string;
@@ -252,5 +252,3 @@ class MediaItem {
     this.metadata = json.metadata || {};
   }
 }
-
-export default MediaItem;

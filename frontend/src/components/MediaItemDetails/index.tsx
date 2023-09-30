@@ -26,14 +26,14 @@ import {
   selectShowError,
 } from '../../selectors/MediaItemDetails';
 import { dismissError } from '../../features/MediaItemDetails/slice';
-import fetchMediaItem from '../../features/MediaItemDetails/fetchMediaItem';
-import SubtitlesView from '../SubtitlesView';
-import MediaItemTopicsList from '../MediaItemTopicList';
-import rescanMediaItem from '../../features/MediaItemDetails/rescanMediaItem';
-import confirmMediaItemTopic from '../../features/MediaItemDetails/confirmMediaItemTopic';
-import deleteMediaItemTopic from '../../features/MediaItemDetails/deleteMediaItemTopic';
+import { fetchMediaItem } from '../../features/MediaItemDetails/fetchMediaItem';
+import { SubtitlesView } from '../SubtitlesView';
+import { MediaItemTopicList } from '../MediaItemTopicList';
+import { rescanMediaItem } from '../../features/MediaItemDetails/rescanMediaItem';
+import { confirmMediaItemTopic } from '../../features/MediaItemDetails/confirmMediaItemTopic';
+import { deleteMediaItemTopic } from '../../features/MediaItemDetails/deleteMediaItemTopic';
 
-const MediaItemDetails = () => {
+export const MediaItemDetails = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { id } = useParams();
@@ -168,7 +168,7 @@ const MediaItemDetails = () => {
               </Flex>
             </Card.Section>
             <ScrollArea.Autosize h={300} p="xs">
-              <MediaItemTopicsList
+              <MediaItemTopicList
                 topics={item?.topics || []}
                 topicDeleteClicked={deleteTopicClicked}
                 topicConfirmClicked={confirmTopicClicked}
@@ -208,5 +208,3 @@ const MediaItemDetails = () => {
     </Container>
   );
 };
-
-export default MediaItemDetails;

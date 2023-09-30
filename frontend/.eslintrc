@@ -20,15 +20,11 @@
   },
   "plugins": ["react", "@typescript-eslint", "react-hooks"],
   "rules": {
-    "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      { "argsIgnorePattern": "^_" }
-    ],
-    "no-shadow": "off",
-    "@typescript-eslint/no-shadow": "error",
+    "import/prefer-default-export": "off",
+    "import/no-default-export": "error",
     "import/extensions": ["error", "never"],
     "require-jsdoc": "off",
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "semi": ["error", "always"],
     "max-len": ["error", { "code": 160 }],
     "no-param-reassign": [

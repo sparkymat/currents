@@ -1,13 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import fetchMediaItem from './fetchMediaItem';
+import { fetchMediaItem } from './fetchMediaItem';
 
 export interface ConfirmMediaItemTopicRequest {
   mediaItemID: string;
   topicID: string;
 }
 
-const confirmMediaItemTopic = createAsyncThunk<
+export const confirmMediaItemTopic = createAsyncThunk<
   void,
   ConfirmMediaItemTopicRequest
 >(
@@ -29,5 +29,3 @@ const confirmMediaItemTopic = createAsyncThunk<
     thunkAPI.dispatch(fetchMediaItem(mediaItemID));
   },
 );
-
-export default confirmMediaItemTopic;

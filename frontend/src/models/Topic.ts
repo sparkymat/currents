@@ -1,4 +1,4 @@
-class Topic {
+export class Topic {
   public id: string;
 
   public name: string;
@@ -16,5 +16,3 @@ class Topic {
     this.keywords = json.keywords;
   }
 }
-
-export default Topic;

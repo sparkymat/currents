@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import MediaItem, { MediaItemType } from '../../models/MediaItem';
-import searchMediaItems from './searchMediaItems';
-import createMediaItem from './createMediaItem';
+import { MediaItem, MediaItemType } from '../../models/MediaItem';
+import { searchMediaItems } from './searchMediaItems';
+import { createMediaItem } from './createMediaItem';
 
 export interface State {
   items: MediaItem[];
@@ -111,4 +111,4 @@ export const {
   updateCreateModalURL,
 } = slice.actions;
 
-export default slice.reducer;
+export const { reducer } = slice;

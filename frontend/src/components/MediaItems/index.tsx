@@ -22,7 +22,7 @@ import { useParams } from 'react-router-dom';
 import { IconX } from '@tabler/icons-react';
 
 import { AppDispatch } from '../../store';
-import searchMediaItems from '../../features/MediaItems/searchMediaItems';
+import { searchMediaItems } from '../../features/MediaItems/searchMediaItems';
 import {
   selectErrorMessage,
   selectLoading,
@@ -45,11 +45,11 @@ import {
   updatePage,
   updateQuery,
 } from '../../features/MediaItems/slice';
-import MediaItemsFilterBar from '../MediaItemsFilterBar';
+import { MediaItemsFilterBar } from '../MediaItemsFilterBar';
 import { MediaItemType } from '../../models/MediaItem';
-import createMediaItem from '../../features/MediaItems/createMediaItem';
+import { createMediaItem } from '../../features/MediaItems/createMediaItem';
 
-const MediaItems = () => {
+export const MediaItems = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { colorScheme } = useMantineColorScheme();
 
@@ -269,5 +269,3 @@ const MediaItems = () => {
     </Container>
   );
 };
-
-export default MediaItems;

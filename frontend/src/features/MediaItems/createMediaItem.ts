@@ -1,14 +1,17 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import MediaItem, { MediaItemType } from '../../models/MediaItem';
-import searchMediaItems from './searchMediaItems';
+import { MediaItem, MediaItemType } from '../../models/MediaItem';
+import { searchMediaItems } from './searchMediaItems';
 
 interface CreateMediaItemRequest {
   url: string;
   item_type: MediaItemType;
 }
 
-const createMediaItem = createAsyncThunk<MediaItem, CreateMediaItemRequest>(
+export const createMediaItem = createAsyncThunk<
+  MediaItem,
+  CreateMediaItemRequest
+>(
   'mediaItems/createMediaItem',
   async (request: CreateMediaItemRequest, thunkAPI) => {
     const csrf = (document.querySelector('meta[name="csrf-token"]') as any)
@@ -25,5 +28,3 @@ const createMediaItem = createAsyncThunk<MediaItem, CreateMediaItemRequest>(
     return new MediaItem(response.data);
   },
 );
-
-export default createMediaItem;

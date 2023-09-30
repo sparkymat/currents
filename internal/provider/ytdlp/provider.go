@@ -35,7 +35,7 @@ func (*Provider) DownloadVideo(ctx context.Context, callbackContext any, id stri
 		}
 	}()
 
-	cmd := exec.Command("yt-dlp", "-o", "sub:subtitle.%(ext)s", "--write-subs", "--newline", url, "--progress-template", "%(progress)j", "-o", "video.%(ext)s", "-o", "thumbnail:thumb.%(ext)s", "--write-thumbnail", "--write-info-json") //nolint:lll,revive
+	cmd := exec.Command("yt-dlp", "-f", "bestvideo+bestaudio/best", "-o", "sub:subtitle.%(ext)s", "--write-subs", "--newline", url, "--progress-template", "%(progress)j", "-o", "video", "-o", "thumbnail:thumb.%(ext)s", "--write-thumbnail") //nolint:lll,revive
 	cmd.Dir = destinationPath
 	cmd.Stdout = outputWriter
 

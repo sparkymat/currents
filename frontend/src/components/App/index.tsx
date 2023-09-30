@@ -27,9 +27,10 @@ import {
 
 import { AppDispatch } from '../../store';
 import { updatePath } from '../../features/App/slice';
-import MediaItems from '../MediaItems';
-import MediaItemDetails from '../MediaItemDetails';
+import { MediaItems } from '../MediaItems';
+import { MediaItemDetails } from '../MediaItemDetails';
 import { selectPath } from '../../selectors/App';
+import { TopicsList } from '../TopicsList';
 
 interface Path {
   href: string;
@@ -37,7 +38,7 @@ interface Path {
   icon: React.JSX.Element;
 }
 
-const App = () => {
+export const App = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [opened, setOpened] = useState(false);
   const location = useLocation();
@@ -172,10 +173,10 @@ const App = () => {
         <Routes>
           <Route index element={<MediaItems />} />
           <Route path="/item/:id" element={<MediaItemDetails />} />
+          <Route path="/topics" element={<TopicsList />} />
+          <Route path="/topics/p/:page" element={<TopicsList />} />
         </Routes>
       </AppShell>
     </div>
   );
 };
-
-export default App;

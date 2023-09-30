@@ -4,7 +4,7 @@ import { SubtitleEntry } from '../../models/Subtitle';
 
 export interface SubtitlesViewProps {
   entries: SubtitleEntry[];
-  onTimestampClicked(timestampMS: number);
+  onTimestampClicked(_timestampMS: number);
 }
 
 const pad = (num: number, size: number): string => {
@@ -24,7 +24,10 @@ const msToString = (ms: number): string => {
   )}`;
 };
 
-const SubtitlesView = ({ entries, onTimestampClicked }: SubtitlesViewProps) => (
+export const SubtitlesView = ({
+  entries,
+  onTimestampClicked,
+}: SubtitlesViewProps) => (
   <Flex direction="column">
     {entries.map(e => (
       <Flex direction="column">
@@ -50,5 +53,3 @@ const SubtitlesView = ({ entries, onTimestampClicked }: SubtitlesViewProps) => (
     ))}
   </Flex>
 );
-
-export default SubtitlesView;

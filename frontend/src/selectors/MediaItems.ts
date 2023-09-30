@@ -1,4 +1,4 @@
-import MediaItem, { MediaItemType } from '../models/MediaItem';
+import { MediaItem, MediaItemType } from '../models/MediaItem';
 import { RootState } from '../store';
 
 export const selectLoading = (state: RootState): boolean =>

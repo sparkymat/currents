@@ -1,8 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import fetchMediaItem from './fetchMediaItem';
+import { fetchMediaItem } from './fetchMediaItem';
 
-const rescanMediaItem = createAsyncThunk<void, string>(
+export const rescanMediaItem = createAsyncThunk<void, string>(
   'mediaItems/rescanMediaItem',
   async (id, thunkAPI) => {
     const csrf = (document.querySelector('meta[name="csrf-token"]') as any)
@@ -21,5 +21,3 @@ const rescanMediaItem = createAsyncThunk<void, string>(
     thunkAPI.dispatch(fetchMediaItem(id));
   },
 );
-
-export default rescanMediaItem;
